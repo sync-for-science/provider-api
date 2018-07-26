@@ -2,7 +2,8 @@ from services.fhir_client import query_organization, query_practitioner
 
 
 def key(term):
-    return term.get('practitioner_name') or term.get('organization_name')
+    return term.get("practitioner_name") or term.get("organization_name")
+
 
 def search(term):
     results = list()

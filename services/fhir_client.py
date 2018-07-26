@@ -5,11 +5,16 @@ from fhirclient.models.organization import Organization
 from fhirclient.models.practitioner import Practitioner
 from fhirclient.models.practitionerrole import PractitionerRole
 
+from flask import current_app
 
-SETTINGS = {"app_id": "provider_api", "api_base": "http://localhost:8080/baseDstu3"}
 
+def get_client():
+    settings = {
+        "app_id": current_app.config["APP_ID"],
+        "api_base": current_app.config["FHIR_BASE"],
+    }
 
-CLIENT = FHIRClient(SETTINGS)
+    return FHIRClient(settings)
 
 
 def address_to_text(address):
@@ -28,6 +33,7 @@ def practitioner_role_to_output(resource):
         "practitioner_name": practitioner.name[0].text,
         "organization_name": organization.name,
         "address": address_to_text(location.address),
+        "id": resource.id,
     }
 
 
@@ -36,6 +42,7 @@ def organization_to_output(resource):
         "practitioner_name": None,
         "organization_name": resource.name,
         "address": address_to_text(resource.address[0]),
+        "id": resource.id,
     }
 
 
@@ -59,6 +66,6 @@ def query_server(resource_type, args, includes=None):
         search.include(include)
     return [
         resource
-        for resource in search.perform_resources(CLIENT.server)
+        for resource in search.perform_resources(get_client().server)
         if isinstance(resource, resource_type)
     ]
