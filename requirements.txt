@@ -3,7 +3,7 @@ chardet==3.0.4
 click==6.7
 fhirclient==3.2.0
 Flask==1.0.2
-Flask-Cors==3.0.6
+Flask-Cors==3.0.9
 idna==2.7
 isodate==0.6.0
 itsdangerous==0.24
